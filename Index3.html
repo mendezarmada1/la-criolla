@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Criolla</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background-color: #fdf6ed;
+      color: #2d2a26;
+      scroll-behavior: smooth;
+    }
+    header {
+      background: url('banner-logo-criolla.png') no-repeat center center;
+      background-size: cover;
+      background-color: #fdf6ed;
+      height: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 1.5rem;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .nav-buttons a {
+      background-color: #f5a623;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .nav-buttons a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .intro {
+      text-align: center;
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      background: #fff8ee;
+      margin-top: -1rem;
+    }
+    section {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .product-card {
+      background-color: white;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      width: 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .product-card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .add-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .add-controls button {
+      background-color: #2d2a26;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .cart {
+      animation: slideUp 0.4s ease;
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 999;
+      display: none;
+    }
+    .cart.show {
+      display: block;
+    }
+    .cart h3 {
+      margin-top: 0;
+    }
+    .cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+    }
+    .cart-items li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-items .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .cart-items button {
+      background: #2d2a26;
+      color: white;
+      border: none;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .cart button.send {
+      background-color: #25d366;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #contacto i {
+      color: #25d366;
+      margin-right: 0.5rem;
+    }
+    #contacto a[href*="instagram"] i {
+      color: #e1306c;
+    }
+    footer {
+      background-color: #2d2a26;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .added-animation {
+      animation: bounce 0.4s ease;
+    }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  .producto-vacio {
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+</style>
+</head>
+<body>
+  <header data-aos="fade-down">
+    <div class="nav-buttons">
+      <a href="#productos">Productos</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#sobre">Quienes somos</a>
+    </div>
+  </header>
+
+  <div class="intro" data-aos="fade-up">
+    <p>Sabores auténticos, hechos en Madrid</p>
+  </div>
+
+  <div class="cart" id="cart">
+    <h3><i class="fas fa-shopping-cart"></i> Carrito <span id="cart-count" style="background:#f5a623;color:white;padding:0.2rem 0.5rem;border-radius:50%;font-size:0.8rem;margin-left:0.5rem;">0</span></h3>
+    <ul class="cart-items" id="cart-items"></ul>
+    <button class="send" onclick="sendOrder()">Enviar pedido por WhatsApp</button>
+  </div>
+
+  <section id="productos" data-aos="fade-up">
+    <h2>Nuestros productos</h2>
+    <div class="products">
+      <div class="product-card">
+        <img src="tequenos.png" alt="Tequeños congelados">
+        <h3>Tequeños congelados </h3>
+        <p>Para freír - 900 g</p>
+        <button onclick="toggleDescripcion()" style="margin: 0.5rem 0; background: none; color: #f5a623; border: none; font-weight: bold; cursor: pointer;">Ver instrucciones de fritura</button>
+        <p id="descripcion-tequenos" style="display: none; font-size: 0.9rem; color: #444;">Freír directamente sin descongelar. Usar aceite muy caliente al principio para sellar bien la masa y luego reducir la temperatura para que se cocinen uniformemente sin quemarse. Ideal en freidora o sartén honda.</p>
+        <div class="add-controls">
+          <button id="btn-minus-tequenos" onclick="updateQuantity('tequenos', 'Tequeños congelados', -1)">-</button>
+          <span id="qty-tequenos">0</span>
+          <button onclick="updateQuantity('tequenos', 'Tequeños congelados', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="salsas.png" alt="Salsas artesanales">
+        <h3>Salsas artesanales</h3>
+        <p>3 sabores tradicionales</p>
+        <button onclick="toggleDescripcionSalsas()" style="margin: 0.5rem 0; background: none; color: #f5a623; border: none; font-weight: bold; cursor: pointer;">Ver detalles de las salsas</button>
+        <p id="descripcion-salsas" style="display: none; font-size: 0.9rem; color: #444;">Nuestras salsas artesanales están hechas con ingredientes naturales y recetas familiares: la guasacaca con aguacate fresco, el mojo picón con un toque de picante canario y la salsa de ajo cremosa estilo alioli con perejil y cilantro.</p>
+        <select onchange="addSelectedSalsa(this)">
+          <option value="">Elige una salsa</option>
+          <option value="Salsa de ajo">Salsa de ajo</option>
+          <option value="Guasacaca">Guasacaca</option>
+          <option value="Mojo rojo picón">Mojo rojo picón</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" data-aos="fade-up">
+    <h2>Sobre La Criolla</h2>
+    <p><strong>La Criolla</strong> nace en Madrid con raíces que cruzan los campos del llano venezolano, las tierras canarias y la tradición de los Andes. Esta unión cultural y familiar da forma a una marca comprometida con el sabor auténtico, el trabajo artesanal y el respeto por lo natural.</p>
+    <p>Desde sus inicios, el equipo detrás de La Criolla ha estado vinculado al campo, a la producción sostenible y a las huertas naturales. Durante años, en la ciudad de Maracay (Estado Aragua), colaboraron con escuelas del norte de la ciudad, abasteciendo cantinas escolares con productos artesanales y nutritivos, llevando alimentos honestos y hechos con dedicación a cientos de niños y familias.</p>
+    <p>La formación técnica en agronomía, el amor por lo ecológico y el arraigo familiar convergen en una visión clara: ofrecer productos de alta calidad, elaborados con esmero, y que honren las tradiciones culinarias de sus orígenes. La calidez del llano, la nobleza andina, la energía canaria y la alegría de una familia trabajadora y optimista se reflejan en cada paso del proceso.</p>
+    <p><strong>La Criolla</strong> tiene un propósito sencillo pero poderoso: llevar un pedacito de ese sabor auténtico a cada establecimiento y hogar, compartiendo cultura, tradición y calidad en cada bocado.</p>
+  </section>
+
+  <section id="contacto" data-aos="fade-up">
+    <h2>Contacto</h2>
+    <p>
+      <a href="https://wa.me/34612345678?text=Hola%2C%20quiero%20hacer%20un%20pedido" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+      &nbsp;&nbsp;&nbsp;
+      <a href="https://instagram.com/tu_usuario" target="_blank">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+    </p>
+  </section>
+
+  <footer data-aos="fade-up">
+    <p>&copy; 2025 La Criolla - Hecho por venezolanos en Madrid</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    const cart = {};
+
+    function updateQuantity(id, label, change) {
+      const prevQty = cart[id]?.qty || 0;
+      if (!cart[id]) cart[id] = { label: label, qty: 0 };
+      cart[id].qty += change;
+      if (cart[id].qty <= 0) delete cart[id];
+
+      // Actualizar cantidad visible si es un producto con visualización
+      const qtySpan = document.getElementById(`qty-${id}`);
+      const minusBtn = document.getElementById(`btn-minus-${id}`);
+      if (qtySpan) {
+        const newQty = cart[id]?.qty || 0;
+        qtySpan.textContent = newQty;
+        if (minusBtn) minusBtn.disabled = newQty === 0;
+      }
+
+      if (change > 0 && qtySpan) {
+        qtySpan.classList.add('added-animation');
+        setTimeout(() => qtySpan.classList.remove('added-animation'), 400);
+      }
+
+      renderCart();
+    }
+
+    function addSelectedSalsa(selectElement) {
+      const label = selectElement.value;
+      if (!label) return;
+      const id = label.toLowerCase().replace(/[^a-z0-9]/g, '');
+      updateQuantity(id, label, 1);
+      selectElement.selectedIndex = 0;
+      const cartCount = document.getElementById('cart-count');
+      if (cartCount) {
+        cartCount.classList.add('added-animation');
+        setTimeout(() => cartCount.classList.remove('added-animation'), 400);
+      }
+    }
+
+    function renderCart() {
+      const cartEl = document.getElementById('cart');
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      cartItems.innerHTML = '';
+      let hasItems = false;
+      let totalCount = 0;
+      for (const id in cart) {
+        hasItems = true;
+        const { label, qty } = cart[id];
+        totalCount += qty;
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${label}</span>
+          <div class="controls">
+            <button onclick="updateQuantity('${id}', '${label}', -1)">-</button>
+            <span>${qty}</span>
+            <button onclick="updateQuantity('${id}', '${label}', 1)">+</button>
+          </div>`;
+        cartItems.appendChild(li);
+        try {
+          const qtySpan = document.getElementById(`qty-${id}`);
+          if (qtySpan) {
+  const quantity = cart[id]?.qty || 0;
+  qtySpan.textContent = quantity;
+  const minusBtn = document.getElementById(`btn-minus-${id}`);
+  if (minusBtn) minusBtn.disabled = quantity === 0;
+}
+        } catch (e) {
+          console.warn(`No se pudo actualizar qty para ${id}:`, e);
+        }
+      }
+      cartCount.textContent = totalCount;
+      cartEl.classList.toggle('show', hasItems);
+    }
+
+    function sendOrder() {
+      const items = Object.values(cart)
+        .map(({ label, qty }) => `${label} x ${qty}`)
+        .join(', ');
+      const message = encodeURIComponent('Hola, quiero hacer un pedido de: ' + items);
+      window.open('https://wa.me/34665023267?text=' + message, '_blank');
+    }
+
+    function toggleDescripcion() {
+      const desc = document.getElementById('descripcion-tequenos');
+      if (desc && desc.style.display === 'none') {
+        desc.style.display = 'block';
+      } else if (desc) {
+        desc.style.display = 'none';
+      }
+    }
+
+    function toggleDescripcionSalsas() {
+      const desc = document.getElementById('descripcion-salsas');
+      if (desc && desc.style.display === 'none') {
+        desc.style.display = 'block';
+      } else if (desc) {
+        desc.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
+
